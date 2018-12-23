@@ -24,6 +24,12 @@ var express = require("express")
     // bodyParser Middleware(must be above cors)
     app.use(bodyParser.json())
 
+    //Passport
+    app.use(passport.initialize())
+    app.use(passport.session())
+
+    require('./config/passport')(passport)
+
     //Corse Middleware
     app.use(cors())
 
