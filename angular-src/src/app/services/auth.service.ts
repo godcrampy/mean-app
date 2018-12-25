@@ -19,21 +19,27 @@ export class AuthService {
     // use httpheader instead of headers as in video 7
     let headers = new HttpHeaders()
     headers.append('Content-Type', 'application/json')
-    return this.http.post('https://localhost:3000/users/register', user, {headers: headers}).pipe(map(res => res))
+    return this.http.post('http://localhost:3000/users/register', user, {headers: headers}).pipe(map(res => res))
   }
 
   authenticateUser(user){
-    let headers = new HttpHeaders()
-    headers.append('Content-Type', 'application/json')
-    return this.http.post('localhost:3000/users/authenticate', user, {headers: headers}).pipe(map(res => res))
+    //New format of header
+    let headers = new HttpHeaders({
+      'Content-Type': 'application/json'
+    })
+    // headers.append('Content-Type', 'application/json') //Old Format
+    return this.http.post('http://localhost:3000/users/authenticate', user, {headers}).pipe(map(res => res))
   }
 
   getProfile(){
-    let headers = new HttpHeaders()
     this.loadToken()
-    headers.append('Authorization', this.authToken)
-    headers.append('Content-Type', 'application/json')
-    return this.http.get('https://localhost:3000/users/profile', {headers: headers}).pipe(map(res => res))
+    //New Format of Header
+    let headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Authorization': this.authToken
+    })
+    return this.http.get('http://localhost:3000/users/profile', {headers}).pipe(map(res => res))
+    
   }
 
 
@@ -48,6 +54,7 @@ export class AuthService {
     
     const token = localStorage.getItem('id_token')
     this.authToken = token;
+    
   }
 
   logout(){

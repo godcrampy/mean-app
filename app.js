@@ -8,6 +8,12 @@ var express = require("express")
     users = require("./routes/users")
     config = require("./config/database")
 
+    app.use(function(req, res, next) {
+        res.header("Access-Control-Allow-Origin", "*");
+        res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+        next();
+      });
+
     //Connect mongoose to database
     mongoose.connect(config.database)
     mongoose.connection.on('connected', ()=>{
@@ -32,6 +38,8 @@ var express = require("express")
 
     //Corse Middleware
     app.use(cors())
+
+  
 
     // Users
     app.use('/users', users)
