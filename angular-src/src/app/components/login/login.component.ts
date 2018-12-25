@@ -27,7 +27,9 @@ export class LoginComponent implements OnInit {
 
     this.authService.authenticateUser(user).subscribe((data: {success: boolean, msg: string, token: string, user: {}})=>{
       if(data.success){
+        
         this.authService.storeUserData(data.token, data.user)
+        this.authService.loadToken()
         this.ngFlashMessageService.showFlashMessage({
           // Array of messages each will be displayed in new line
           messages: ["Login Successful"], 
@@ -42,6 +44,7 @@ export class LoginComponent implements OnInit {
 
       }
       else {
+        this.authService.loadToken()
         this.ngFlashMessageService.showFlashMessage({
           // Array of messages each will be displayed in new line
           messages: ["Invalid Username or Password"], 

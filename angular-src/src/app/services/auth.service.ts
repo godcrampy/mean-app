@@ -6,12 +6,14 @@ import {HttpHeaders} from '@angular/common/http'
 import { map } from "rxjs/operators";
 
 
+
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
   authToken: any
   user: any
+  isLoggedIn : boolean = false
 
   constructor(private http : HttpClient) { } 
 
@@ -23,6 +25,7 @@ export class AuthService {
   }
 
   authenticateUser(user){
+    
     //New format of header
     let headers = new HttpHeaders({
       'Content-Type': 'application/json'
@@ -54,12 +57,21 @@ export class AuthService {
     
     const token = localStorage.getItem('id_token')
     this.authToken = token;
-    
+    if (this.authToken){
+      this.isLoggedIn = true
+    }
+    else {
+      this.isLoggedIn = false
+    }
+    console.log("isLoggedIn: " + this.isLoggedIn)
   }
 
   logout(){
     this.authToken = null
     this.user = null
     localStorage.clear()
+    this.loadToken()
   }
+
+  
 }
